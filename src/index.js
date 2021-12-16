@@ -4,7 +4,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { View, PanResponder, Animated, UIManager } from "react-native";
+import { View, PanResponder, Animated, UIManager, StyleSheet } from "react-native";
 
 // Enable LayoutAnimation on Android
 if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -112,7 +112,7 @@ export default class RNSwipeVerify extends Component {
     Animated.timing(this.state.drag, {
       toValue: { x: 0, y: 0 },
       duration: 300,
-      useNativeDriver: true
+      useNativeDriver: false
     }).start();
     this.toggleShowAnimation(true, this.props.okButton.duration);
     this.setState({ moving: false, verify: false, percent: 0 });
@@ -125,7 +125,7 @@ export default class RNSwipeVerify extends Component {
       {
         toValue: visible ? 1 : 0, // Animate to opacity: 1 (opaque)
         duration: duration, // Make it take a while
-        useNativeDriver: true
+        useNativeDriver: false
       }
     ).start();
   }
@@ -151,7 +151,6 @@ export default class RNSwipeVerify extends Component {
           backgroundColor: backgroundColor,
           padding: 4,
           borderRadius: buttonSize+4,
-          opacity: disable?0.5:1
         },style]}
         pointerEvents={disable?'none':'auto'}
       >
@@ -167,7 +166,7 @@ export default class RNSwipeVerify extends Component {
             backgroundColor,
             height: buttonSize,
             borderRadius,
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           {this.props.children && (
@@ -199,6 +198,9 @@ export default class RNSwipeVerify extends Component {
             {icon}
           </Animated.View>
         </View>
+        {
+          disable?<View style={{...StyleSheet.absoluteFill,backgroundColor: "#00000090"}}/>:null
+        }
       </View>
     );
   }
