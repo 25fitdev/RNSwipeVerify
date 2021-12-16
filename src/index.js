@@ -22,7 +22,8 @@ const propTypes = {
   icon: PropTypes.node,
   okIcon: PropTypes.any,
   okButton: PropTypes.object,
-  borderRadius: PropTypes.number
+  borderRadius: PropTypes.number,
+  disable: PropTypes.bool
 };
 
 //default props value
@@ -32,7 +33,8 @@ const defaultProps = {
   textColor: "#000",
   borderColor: "rgba(0,0,0,0)",
   okButton: { visible: true, duration: 300 },
-  borderRadius: 0
+  borderRadius: 0,
+  disable: false
 };
 
 export default class RNSwipeVerify extends Component {
@@ -81,7 +83,7 @@ export default class RNSwipeVerify extends Component {
           }
           drag.setValue({ x: toX, y: 0 });
         },
-        useNativeDriver: true
+        useNativeDriver: false
       }),
       onPanResponderRelease: () => {
         if (this.state.verify) return;
@@ -136,7 +138,8 @@ export default class RNSwipeVerify extends Component {
       backgroundColor,
       icon,
       borderRadius,
-      style
+      style,
+      disable
     } = this.props;
     const { buttonOpacity } = this.state;
 
@@ -145,12 +148,12 @@ export default class RNSwipeVerify extends Component {
     return (
       <View
         style={[{
-          borderColor: borderColor,
-          borderWidth: 2,
-          borderRadius: borderRadius + 4,
-          padding: 1,
-          height: buttonSize+4
+          backgroundColor: backgroundColor,
+          padding: 4,
+          borderRadius: buttonSize+4,
+          opacity: disable?0.5:1
         },style]}
+        pointerEvents={disable?'none':'auto'}
       >
         <View
           onLayout={event => {
