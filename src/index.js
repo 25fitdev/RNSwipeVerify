@@ -48,8 +48,13 @@ export default class RNSwipeVerify extends Component {
       verify: false,
       percent: 0,
       position: { x: 0, y: 0 },
-      dimensions: { width: 0, height: 0 }
+      dimensions: { width: 0, height: 0 },
+      widthHidden: 0
     };
+
+    this.state.drag.addListener(({x,y}) =>{
+      this.setState({widthHidden: x})
+    });
 
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -111,7 +116,7 @@ export default class RNSwipeVerify extends Component {
     this.state.drag.setOffset({ x: 0, y: 0 });
     Animated.timing(this.state.drag, {
       toValue: { x: 0, y: 0 },
-      duration: 300,
+      duration: 500,
       useNativeDriver: false
     }).start();
     this.toggleShowAnimation(true, this.props.okButton.duration);
@@ -180,6 +185,9 @@ export default class RNSwipeVerify extends Component {
             </View>
           )}
 
+          <Animated.View style={{position: "absolute",borderRadius: borderRadius,height: buttonSize, width: (this.state.widthHidden + buttonSize), backgroundColor}} overflow={'hidden'}>
+            <View style={{flex: 1, backgroundColor: "#00000099"}}/>
+          </Animated.View>
           <Animated.View
             {...this._panResponder.panHandlers}
             style={[
